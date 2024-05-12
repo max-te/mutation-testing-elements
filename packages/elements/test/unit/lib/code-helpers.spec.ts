@@ -19,7 +19,7 @@ describe(highlightCode.name, () => {
     ['foo.feature', ProgrammingLanguage.gherkin, 'Feature: foo'],
   ])(`should parse %s as %s`, (fileName, language, code) => {
     const highlightSpy = vi.spyOn(prism, 'highlight');
-    const highlightedCode = highlightCode(code, fileName);
+    const highlightedCode = highlightCode(code, language);
     expect(highlightedCode).contains('<span'); // actual highlighting is not tested, in prism we trust
     expect(highlightSpy).toHaveBeenCalledWith(code, prism.languages[language], language);
   });

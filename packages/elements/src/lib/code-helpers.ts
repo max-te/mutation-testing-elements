@@ -59,11 +59,13 @@ export function determineLanguage(fileName: string): ProgrammingLanguage | undef
   }
 }
 
-export function highlightCode(code: string, fileName: string): string {
-  const language = determineLanguage(fileName) ?? 'plain';
+export function highlightCode(code: string, language: string): string {
   let highlightLanguage = language;
   if (language === ProgrammingLanguage.vue) {
     highlightLanguage = ProgrammingLanguage.html;
+  }
+  if (!languages[highlightLanguage]) {
+    highlightLanguage = 'plain';
   }
   return highlight(code, languages[highlightLanguage], highlightLanguage);
 }

@@ -106,12 +106,12 @@ export class FileComponent extends RealTimeElement {
       >
         <code ${ref(this.codeRef)} class="flex language-${this.model.language}">
           <table>${this.lines.map((line, lineIndex) => {
-        const lineNr = lineIndex + 1;
-        const mutantDots = this.renderMutantDots(mutantLineMap.get(lineNr));
-        const finalMutants = this.lines.length === lineNr ? renderFinalMutants(lineNr) : nothing;
+      const lineNr = lineIndex + 1;
+      const mutantDots = this.renderMutantDots(mutantLineMap.get(lineNr));
+      const finalMutants = this.lines.length === lineNr ? renderFinalMutants(lineNr) : nothing;
 
-        return renderLine(line, renderDots(mutantDots, finalMutants));
-      })}</table>
+      return renderLine(line, renderDots(mutantDots, finalMutants));
+    })}</table>
           </code>
           </pre>
     `;
@@ -135,14 +135,13 @@ export class FileComponent extends RealTimeElement {
   private renderMutantDots(mutants: MutantModel[] | undefined) {
     return mutants?.length
       ? mutants.map(
-          (mutant) =>
-            svg`<svg mutant-id="${mutant.id}" class="mutant-dot ${
-              this.selectedMutant?.id === mutant.id ? 'selected' : mutant.status
+        (mutant) =>
+          svg`<svg mutant-id="${mutant.id}" class="mutant-dot ${this.selectedMutant?.id === mutant.id ? 'selected' : mutant.status
             }" height="10" width="12">
           <title>${title(mutant)}</title>
           <circle cx="5" cy="5" r="5" />
           </svg>`,
-        )
+      )
       : nothing;
   }
 
@@ -211,7 +210,7 @@ export class FileComponent extends RealTimeElement {
         label: html`${getEmojiForStatus(status)} ${status}`,
         context: getContextClassForStatus(status),
       }));
-    const highlightedSource = highlightCode(this.model.source, this.model.name);
+    const highlightedSource = highlightCode(this.model.source, this.model.language);
     const startedMutants = new Set<MutantResult>();
     const mutantsToPlace = new Set(this.model.mutants);
 
@@ -257,7 +256,7 @@ export class FileComponent extends RealTimeElement {
 
     const [focusFrom, focusTo] = findDiffIndices(originalLines, mutatedLines);
 
-    const lines = transformHighlightedLines(highlightCode(mutatedLines, this.model.name), function* ({ offset }) {
+    const lines = transformHighlightedLines(highlightCode(mutatedLines, this.model.language), function* ({ offset }) {
       if (offset === focusFrom) {
         yield { elementName: 'span', id: 'diff-focus', attributes: { class: 'diff-focus' } };
       } else if (offset === focusTo) {

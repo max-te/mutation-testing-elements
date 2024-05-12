@@ -99,23 +99,23 @@ export class TestFileComponent extends RealTimeElement {
     if (testsToRenderInTheList.length) {
       return html`<ul class="max-w-6xl">
         ${repeat(
-          testsToRenderInTheList,
-          (test) => test.id,
-          (test) =>
-            html`<li class="my-3">
+        testsToRenderInTheList,
+        (test) => test.id,
+        (test) =>
+          html`<li class="my-3">
               <button
                 class="w-full rounded p-3 text-left hover:bg-gray-100 active:bg-gray-200"
                 type="button"
                 data-active="${this.selectedTest === test}"
                 test-id="${test.id}"
                 @click=${(ev: MouseEvent) => {
-                  ev.stopPropagation();
-                  this.toggleTest(test);
-                }}
+              ev.stopPropagation();
+              this.toggleTest(test);
+            }}
                 >${getEmojiForTestStatus(test.status)} ${test.name} [${test.status}]
               </button>
             </li>`,
-        )}
+      )}
       </ul>`;
     }
     return nothing;
@@ -139,7 +139,7 @@ export class TestFileComponent extends RealTimeElement {
         return this.renderTestDots([...testsByLine.entries()].filter(([line]) => line > lastLine).flatMap(([, tests]) => tests));
       };
 
-      return html`<pre id="report-code-block" class="line-numbers flex rounded-md p-1"><code class="flex language-${determineLanguage(
+      return html`<pre id="report-code-block" class="line-numbers flex rounded-md p-1"><code class="flex language-${this.model.language || determineLanguage(
         this.model.name,
       )}">
       <table>
@@ -157,17 +157,17 @@ export class TestFileComponent extends RealTimeElement {
   private renderTestDots(tests: TestModel[] | undefined) {
     return tests?.length
       ? tests.map(
-          (test) =>
-            svg`<svg test-id="${test.id}" class="cursor-pointer test-dot ${this.selectedTest === test ? 'selected' : test.status}" @click=${(
-              ev: MouseEvent,
-            ) => {
-              ev.stopPropagation();
-              this.toggleTest(test);
-            }} height="10" width="12">
+        (test) =>
+          svg`<svg test-id="${test.id}" class="cursor-pointer test-dot ${this.selectedTest === test ? 'selected' : test.status}" @click=${(
+            ev: MouseEvent,
+          ) => {
+            ev.stopPropagation();
+            this.toggleTest(test);
+          }} height="10" width="12">
           <title>${title(test)}</title>
           <circle cx="5" cy="5" r="5" />
           </svg>`,
-        )
+      )
       : nothing;
   }
 

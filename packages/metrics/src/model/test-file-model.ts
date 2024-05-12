@@ -10,6 +10,7 @@ import type { TestMetrics } from './test-metrics.js';
 export class TestFileModel extends SourceFile implements TestFile {
   tests: TestModel[];
   source: string | undefined;
+  language?: string;
   /**
    * The associated MetricsResult of this file.
    */
@@ -30,5 +31,6 @@ export class TestFileModel extends SourceFile implements TestFile {
       test.sourceFile = this;
       return test;
     });
+    this.language = determineLanguage(this.name);
   }
 }
